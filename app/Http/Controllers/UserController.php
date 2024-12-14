@@ -16,7 +16,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'alamat' => 'required|string|max:255',
@@ -24,7 +24,7 @@ class UserController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
+            'nama' => $validatedData['nama'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
             'alamat' => $validatedData['alamat'],
@@ -83,7 +83,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
+            'nama' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
             'password' => 'sometimes|required|string|min:8',
             'alamat' => 'sometimes|required|string|max:255',
