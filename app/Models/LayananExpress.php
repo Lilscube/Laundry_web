@@ -23,9 +23,6 @@ class LayananExpress extends Model
         'metode_pembayaran',
     ];
 
-    /**
-     * Define a one-to-many relationship with the OrderPerHari model.
-     */
     public function orders(): HasMany
     {
         return $this->hasMany(OrderPerHari::class, 'id_layanan');
