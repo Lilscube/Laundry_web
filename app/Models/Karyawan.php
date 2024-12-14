@@ -16,10 +16,13 @@ class Karyawan extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'name',
+        'id_admin',
+        'foto_karyawan',
+        'nama_karyawan',
+        'no_telp',
         'email',
         'no_telp',
-        'foto_karyawan',
+        
     ];
 
     /**
