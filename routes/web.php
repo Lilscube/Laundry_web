@@ -18,12 +18,20 @@ Route::get('/MainLogin', function () {
     return view('Home.MainLogin');
 })->name('mainlogin');
 
-// Route untuk Login
+// Route untuk User Login
 Route::get('/UserLogin', function () {
     return view('Home.UserLogin');
 })->name('userlogin');
 
-// Route untuk Login
+// Route untuk Admin Login
 Route::get('/AdminLogin', function () {
     return view('Home.AdminLogin');
 })->name('adminlogin');
+
+// Route untuk Registrasi User
+Route::get('/RegistrasiUser', function () {
+    return view('Home.RegistrasiUser'); 
+})->name('register.form');
+
+
+

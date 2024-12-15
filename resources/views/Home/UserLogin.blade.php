@@ -100,7 +100,7 @@
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
                                 
                                 <div class="text-center mt-3">
-                                    <p class="mb-0">Belum punya akun? <a href="{{ url('/RegistrasiUser/index') }}">Registrasi akun</a></p>
+                                    <p class="mb-0">Belum punya akun? <a href="{{ url('/RegistrasiUser') }}">Registrasi akun</a></p>
                                 </div>
                             </form>
                         </div>

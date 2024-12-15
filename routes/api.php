@@ -13,13 +13,14 @@ use App\Http\Controllers\LayananExpressController;
 use App\Http\Controllers\LayananRegulerController;
 
 ///User//
-Route::post('/register', [UserController::class, 'register']);
+Route::post('/register', [UserController::class, 'register'])->name('api.register.user');
 Route::post('/login', [UserController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/update/{id}', [UserController::class, 'update']);
     Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
+    Route::get('/users', [UserController::class, 'index'])->name('api.users.index');
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::post('/admin/logout', [AdminController::class, 'logout']);

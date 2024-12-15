@@ -19,24 +19,26 @@ class UserController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'no_telp' => 'required|string|max:15',
-            'password' => 'required|string|min:8',
             'alamat' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
             'nama' => $validatedData['nama'],
             'email' => $validatedData['email'],
             'no_telp' => $validatedData['no_telp'],
-            'password' => Hash::make($validatedData['password']),
             'alamat' => $validatedData['alamat'],
             'username' => $validatedData['username'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
-        return response()->json([
-            'message' => 'User registered successfully.',
-            'user' => $user,
-        ], 201);
+        // return response()->json([
+        //     'message' => 'User registered successfully.',
+        //     'user' => $user,
+        // ], 201);
+        // return redirect()->route('login.page')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect()->route('UserLogin')->with('success', 'Registration successful. Please login.');
     }
 
     /**
@@ -127,5 +129,20 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User deleted successfully.',
         ]);
+    }
+
+    public function index()
+    {
+        // Ambil semua data user dari database
+        $users = User::all();
+
+        // Jika API digunakan, kembalikan sebagai JSON
+        return response()->json([
+            'message' => 'Data user retrieved successfully.',
+            'users' => $users
+        ], 200);
+
+        // Jika menggunakan blade, tampilkan ke view
+        // return view('Home.UserList', ['users' => $users]);
     }
 }
