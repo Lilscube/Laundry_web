@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LayananController;
 use App\Http\Controllers\OrderPerHariController;
 use App\Http\Controllers\RiwayatTransaksiUserController;
 use App\Http\Controllers\TotalTransaksiController;
@@ -33,6 +34,13 @@ Route::prefix('karyawan')->group(function () {
     Route::get('/{id}', [KaryawanController::class, 'show']);      // Read Single
     Route::put('/update/{id}', [KaryawanController::class, 'update']); // Update
     Route::delete('/delete/{id}', [KaryawanController::class, 'delete']); // Delete
+});
+
+Route::prefix('layanan')->group(function () {
+    Route::post('/create', [LayananController::class, 'create']); // Create Layanan
+    Route::get('/', [LayananController::class, 'index']);         // Get All Layanan
+    Route::get('/{id}', [LayananController::class, 'show']);      // Get Layanan by ID
+    Route::delete('/{id}', [LayananController::class, 'destroy']);
 });
 
 
