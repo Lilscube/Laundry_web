@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('layanans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_user');
-            $table->text('detail_layanan');
+            $table->enum('detail_layanan', ['express', 'reguler']);
             $table->integer('berat');
             $table->string('durasi');
             $table->integer('harga');

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->integer('no_token');
-            $table->unsignedBigInteger('id_transaksi');
+            // $table->unsignedInteger('id_transaksi')->default(0);
             $table->timestamps();
 
-            $table->foreign('id_transaksi')->references('id')->on('total_transaksis')->onDelete('cascade');
+           
         });
     }
 
