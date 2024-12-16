@@ -16,25 +16,29 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'no_telp' => 'required|string|max:15',
             'alamat' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
+            'nama' => $validatedData['nama'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'no_telp' => $validatedData['no_telp'],
             'alamat' => $validatedData['alamat'],
             'username' => $validatedData['username'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
-        return response()->json([
-            'message' => 'User registered successfully.',
-            'user' => $user,
-        ], 201);
+        // return response()->json([
+        //     'message' => 'User registered successfully.',
+        //     'user' => $user,
+        // ], 201);
+        // return redirect()->route('login.page')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect()->route('UserLogin')->with('success', 'Registration successful. Please login.');
     }
 
     /**
@@ -42,25 +46,36 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
+        // Validasi input
         $validatedData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
+        // Cek kredensial
         if (!Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
+        // Ambil data user yang sedang login
         $user = Auth::user();
+
+        // Buat token autentikasi menggunakan Laravel Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        // Jika token gagal dibuat, kembalikan error
+        if (!$token) {
+            return response()->json(['error' => 'Failed to create token.'], 500);
+        }
+
+        // Respons JSON
         return response()->json([
             'message' => 'Login successful.',
             'user' => $user,
             'token' => $token,
-        ]);
+        ], 200);
     }
 
     /**
@@ -83,8 +98,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
+            'nama' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
+            'no_telp' => 'sometimes|string|max:15',
             'password' => 'sometimes|required|string|min:8',
             'alamat' => 'sometimes|required|string|max:255',
             'username' => 'sometimes|required|string|max:255|unique:users,username,' . $id,
@@ -113,5 +129,20 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User deleted successfully.',
         ]);
+    }
+
+    public function index()
+    {
+        // Ambil semua data user dari database
+        $users = User::all();
+
+        // Jika API digunakan, kembalikan sebagai JSON
+        return response()->json([
+            'message' => 'Data user retrieved successfully.',
+            'users' => $users
+        ], 200);
+
+        // Jika menggunakan blade, tampilkan ke view
+        // return view('Home.UserList', ['users' => $users]);
     }
 }
