@@ -1,3 +1,14 @@
+I Putu Anjes Vernanda (220711934) = Backend dan mengintegrasi backend dan frontend dengan api.
+Eugene Jethro Tedja K.W (220711908) = Membuat Frontend
+Raihan Fadhil Pramudita (220711599) = Memperbaiki bug dan melakukan demo, editing video
+
+User
+Username = ronaldo
+Password = ronaldo12345
+
+Admin
+No Token = 12345
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
