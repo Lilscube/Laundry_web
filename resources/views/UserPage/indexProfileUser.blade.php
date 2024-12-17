@@ -102,7 +102,7 @@
         <div class="col-md-6">
             <div class="card text-center">
                 <div class="card-header"></div>
-                <img src="{{ asset('img/j2.jpg') }}" class="profile-img mx-auto d-block" alt="User Image">
+                <img src="{{ asset('img/user.jpg') }}" class="profile-img mx-auto d-block" alt="User Image">
                 <div class="card-body text-center">
                     @if(isset($user))
                         <h5 class="card-text" style="margin-top:20px; margin-bottom:20px;">
