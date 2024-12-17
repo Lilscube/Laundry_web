@@ -1,3 +1,41 @@
+KELAS C KELOMPOK 11
+
+Anggota Kelmopok:
+I Putu Anjes Vernanda (220711934) = Backend dan mengintegrasi backend dan frontend dengan api.
+Eugene Jethro Tedja K.W (220711908) = Membuat Frontend
+Raihan Fadhil Pramudita (220711599) = Memperbaiki bug dan melakukan demo, editing video
+
+Username dan Password Login:
+User :
+Username = ronaldo
+Password = ronaldo12345
+
+Admin :
+No Token = 12345
+
+Bonus Yang diambil:
+Routes API :
+POST /api/register
+POST /api/login
+PUT /api/user/update/{id}
+POST /api/logout
+DEL /api/user/delete/{id}
+GET api/users
+
+POST /api/admin/register
+POST /api/admin/login
+
+POST /api/karyawan/create
+PUT /api/karyawan/update/{id}
+GET /api/karyawan
+DEL /api/karyawan/delete/{id}
+
+POST /api/layanan/create
+GET /api/layanan
+DEL /api/layanan/{id}
+POST /api/layanan/store
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
