@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('api.users.index');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('api.users.show');
     // Route::get('/users/UserPage/indexProfileUser', [UserController::class, 'profile'])->name('user.profile');
+    Route::get('/profile', [UserController::class, 'ProfileUser'])->name('profile.user');
 
     Route::post('/layanan/store', [LayananController::class, 'store']);
     Route::delete('/layanan/{id}', [LayananController::class, 'destroy'])->name('layanan.destroy');

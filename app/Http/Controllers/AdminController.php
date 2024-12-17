@@ -61,10 +61,10 @@ class AdminController extends Controller
         ], 200);
     }
 
-    public function showLoginForm()
-    {
-        return view('AdminPage.LoginAdmin'); // Ganti dengan path view login Anda
-    }
+    // public function showLoginForm()
+    // {
+    //     return view('AdminPage.LoginAdmin'); // Ganti dengan path view login Anda
+    // }
 
 
 }

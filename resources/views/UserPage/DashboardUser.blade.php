@@ -172,7 +172,7 @@
                         <img src="{{ asset('img/j2.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info text-center">
-                        <a href="{{ url('UserPage/indexProfileUser') }}" class="nav-link" style="color:white">
+                        <a href="{{ url('UserPage/ProfileUser') }}" class="nav-link" style="color:white">
                             User
                         </a>
                     </div>

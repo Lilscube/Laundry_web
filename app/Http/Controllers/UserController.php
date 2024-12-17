@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -181,17 +182,24 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function indexProfileUser()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth'); // Menggunakan middleware auth untuk memastikan user sudah login
+    // }
+
+    public function ProfileUser()
     {
-        // $user = auth()->user();
+        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
 
-        // Pastikan user sudah login
-        // if (!$user) {
-        //     return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        // }
-
-        // Kirim data user ke view
-        return view('UserPage.indexProfileUser', compact('user'));
+        if ($user) {
+            // Pastikan pengguna ada sebelum mengakses api_token
+            $api_token = $user->api_token;
+        } else {
+            // Jika pengguna tidak ada, redirect atau beri pesan error
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+    
+        return view('UserPage.ProfileUser', ['user' => $user]);
     }
 
 }
