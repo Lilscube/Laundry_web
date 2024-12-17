@@ -16,25 +16,29 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
+            'no_telp' => 'required|string|max:15',
             'alamat' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
-            'name' => $validatedData['name'],
+            'nama' => $validatedData['nama'],
             'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
+            'no_telp' => $validatedData['no_telp'],
             'alamat' => $validatedData['alamat'],
             'username' => $validatedData['username'],
+            'password' => Hash::make($validatedData['password']),
         ]);
 
         return response()->json([
             'message' => 'User registered successfully.',
             'user' => $user,
         ], 201);
+        // return redirect()->route('login.page')->with('success', 'Registrasi berhasil! Silakan login.');
+        // return redirect()->route('UserLogin')->with('success', 'Registration successful. Please login.');
     }
 
     /**
@@ -42,25 +46,32 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
+        // Validasi input
         $validatedData = $request->validate([
-            'email' => 'required|string|email',
+            'username' => 'required|string', // Bisa diubah menjadi 'username' jika login pakai username
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        $user = User::where('username', $validatedData['username'])->first();
+    
+        // Cek kredensial menggunakan username
+        if (!Auth::attempt(['username' => $validatedData['username'], 'password' => $validatedData['password']])) {
+            return response()->json([
+                'message' => 'Username atau password salah.',
+            ], 401);
         }
-
+    
+        // Ambil data user yang sedang login
         $user = Auth::user();
+    
+        // Buat token autentikasi menggunakan Laravel Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
-
+    
         return response()->json([
             'message' => 'Login successful.',
             'user' => $user,
             'token' => $token,
-        ]);
+        ], 200);
     }
 
     /**
@@ -83,8 +94,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
+            'nama' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $id,
+            'no_telp' => 'sometimes|string|max:15',
             'password' => 'sometimes|required|string|min:8',
             'alamat' => 'sometimes|required|string|max:255',
             'username' => 'sometimes|required|string|max:255|unique:users,username,' . $id,
@@ -114,4 +126,72 @@ class UserController extends Controller
             'message' => 'User deleted successfully.',
         ]);
     }
+
+    public function index()
+    {
+        // Ambil semua data user dari database
+        $users = User::all();
+
+        // Jika API digunakan, kembalikan sebagai JSON
+        return response()->json([
+            'message' => 'Data user retrieved successfully.',
+            'users' => $users
+        ], 200);
+
+        // Jika menggunakan blade, tampilkan ke view
+        // return view('Home.UserList', ['users' => $users]);
+    }
+
+
+    public function show($id)
+    {
+        // Cari user berdasarkan ID
+        $user = User::find($id);
+
+        // Jika user tidak ditemukan
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        // Jika user ditemukan, kembalikan data user
+        return response()->json([
+            'message' => 'User data retrieved successfully.',
+            'user' => $user
+        ], 200);
+    }
+
+    public function profile()
+    {
+        // Ambil data user yang sedang login
+        $user = Auth::user();
+    
+        // Jika user tidak login
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthorized. Please login first.',
+            ], 401);
+        }
+    
+        // Kirim data user
+        return response()->json([
+            'message' => 'User profile retrieved successfully.',
+            'user' => $user,
+        ], 200);
+    }
+
+    public function indexProfileUser()
+    {
+        // $user = auth()->user();
+
+        // Pastikan user sudah login
+        // if (!$user) {
+        //     return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        // }
+
+        // Kirim data user ke view
+        return view('UserPage.indexProfileUser', compact('user'));
+    }
+
 }
