@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\AdminController;
 
 // Redirect root '/' ke route 'home'
 Route::get('/', function () {
@@ -85,6 +86,7 @@ Route::get('AdminPage/indexAdmin', function () {
     return view('AdminPage.indexAdmin');
 })->name('indexadmin');
 Route::get('/AdminPage/indexAdmin', [LayananController::class, 'indexForAdmin'])->name('admin.index');
+Route::get('/AdminPage/indexAdmin', [LayananController::class, 'indexDashboard'])->name('admin.index');
 
 
 
@@ -99,16 +101,25 @@ Route::get('AdminPage/karyawan', function () {
 })->name('karyawan');
 
 //Route untuk memilih indexTotal
-Route::get('AdminPage/indexTotal', function () {
-    return view('AdminPage.indexTotal');
-})->name('indextotal');
+Route::get('/AdminPage/indexTotal', [LayananController::class, 'indexTotal'])->name('layanan.indexTotal');
+
 // Route::get('/AdminPage/indexTotal', [LayananController::class, 'indexTotal'])->name('layanan.indexTotal');
 
+Route::get('/login', [AdminController::class, 'showLoginForm'])->name('login');
+// Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.showLoginForm');
 
+// Route::get('/AdminPage/karyawan', [KaryawanController::class, 'viewKaryawan'])->name('karyawan.view');
 Route::get('/AdminPage/karyawan', [KaryawanController::class, 'viewKaryawan'])->name('karyawan.view');
+// Route::post('/karyawan/create', [KaryawanController::class, 'store'])->name('karyawan.store');
+Route::post('/karyawan/store', [KaryawanController::class, 'create'])->name('karyawan.store');
+
+
+
+
 
 // Route::post('/layanan/{id}/update-status', [LayananController::class, 'updateStatus'])->name('layanan.updateStatus');
 // Route::get('/admin/indexTotal', [LayananController::class, 'indexTotal'])->name('admin.indexTotal');
+
 
 
 

@@ -124,7 +124,7 @@
                 <div class="card-body">
                     <img src="{{ asset('img/admin.jpg') }}" class="profile-img mx-auto d-block" alt="User Image">
                     <h5 class="card-text" style="margin-top: 20px; margin-bottom:20px;">Admin</h5> 
-                    <p class="card-text">No Token Admin: 085877143301</p>
+                    <p class="card-text">Semangat Bekerja</p>
                     
 
                     <!-- <div class="social-icons">

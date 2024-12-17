@@ -21,7 +21,6 @@ class Karyawan extends Model
         'nama_karyawan',
         'no_telp',
         'email',
-        'no_telp',
         
     ];
 

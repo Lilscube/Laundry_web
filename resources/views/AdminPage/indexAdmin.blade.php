@@ -73,9 +73,10 @@
 </style>
 
 <div class="container-fluid">
-    <h1 style="color: hsla(0, 0%, 0%, 0.8)">Dashboard</h1>
+    <h1 style="color: hsla(0, 100.00%, 99.80%, 0.80)">Dashboard</h1>
 
     <div class="row align-items-center mt-3">
+        <!-- Jumlah Orderan -->
         <div class="col-md-4 col-sm-6">
             <div class="card p-0 mx-3">
                 <div class="card-body">
@@ -83,13 +84,14 @@
                         <img class="gambar p-1 me-2" src="{{ asset('img/g2.jpg') }}" alt="Jumlah Orderan">
                         <div class="text-start mt-2">
                             <p class="m-0">Jumlah Orderan</p>
-                            <h4>6</h4>
+                            <h4>{{ $jumlahOrderan }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Jumlah Karyawan -->
         <div class="col-md-4 col-sm-6">
             <div class="card p-0 mx-3">
                 <div class="card-body">
@@ -97,21 +99,22 @@
                         <img class="gambar p-1 me-2" src="{{ asset('img/g1.jpg') }}" alt="Jumlah Karyawan">
                         <div class="text-start mt-2">
                             <p class="m-0">Jumlah Karyawan</p>
-                            <h4>6</h4>
+                            <h4>{{ $jumlahKaryawan }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Total Transaksi -->
         <div class="col-md-4 col-sm-6">
             <div class="card p-0 mx-3">
                 <div class="card-body">
                     <div class="d-flex justify-content-center align-items-center">
                         <img class="gambar p-1 me-2" src="{{ asset('img/g3.jpg') }}" alt="Total Transaksi/Hari">
                         <div class="text-start mt-2">
-                            <p class="m-0">Total Transaksi / Hari</p>
-                            <h4>4</h4>
+                            <p class="m-0">Total Transaksi</p>
+                            <h4>Rp {{ number_format($totalTransaksi, 0, ',', '.') }}</h4>
                         </div>
                     </div>
                 </div>
@@ -120,38 +123,38 @@
     </div>
 
     <h2 class="mt-4">Jumlah Orderan</h2>
-        <table class="table table-striped border-dark text-center">
-            <thead class="table-dark">
+    <table class="table table-striped border-dark text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>NO</th>
+                <th>TGL ORDER</th>
+                <th>BERAT (KG)</th>
+                <th>DURASI</th>
+                <th>LAYANAN</th>
+                <th>METODE PEMBAYARAN</th>
+                <th>HARGA</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($layanans as $key => $layanan)
                 <tr>
-                    <th>NO</th>
-                    <th>TGL ORDER</th>
-                    <th>BERAT (KG)</th>
-                    <th>DURASI</th>
-                    <th>LAYANAN</th>
-                    <th>METODE PEMBAYARAN</th>
-                    <th>HARGA</th>
-                    <th>STATUS</th>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ \Carbon\Carbon::parse($layanan->created_at)->format('d - m - Y') }}</td>
+                    <td>{{ $layanan->berat }} kg</td>
+                    <td>{{ $layanan->durasi }}</td>
+                    <td>{{ ucfirst($layanan->detail_layanan) }}</td>
+                    <td>{{ ucfirst($layanan->metode_pembayaran) }}</td>
+                    <td>Rp {{ number_format($layanan->harga, 0, ',', '.') }}</td>
+                    <td>Lunas</td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($layanans as $key => $layanan)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ \Carbon\Carbon::parse($layanan->created_at)->format('d - m - Y') }}</td>
-                        <td>{{ $layanan->berat }} kg</td>
-                        <td>{{ $layanan->durasi }}</td>
-                        <td>{{ ucfirst($layanan->detail_layanan) }}</td>
-                        <td>{{ ucfirst($layanan->metode_pembayaran) }}</td>
-                        <td>Rp {{ number_format($layanan->harga, 0, ',', '.') }}</td>
-                        <td>Lunas</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">Belum ada layanan yang diinputkan.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+            @empty
+                <tr>
+                    <td colspan="8" class="text-center">Belum ada layanan yang diinputkan.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 
 @endsection

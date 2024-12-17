@@ -88,7 +88,7 @@
                                 </div>
 
                                 <div class="form-floating mb-2">
-                                    <input type="number" class="form-control" id="no_token" placeholder="Admin Token" required />
+                                <input type="text" class="form-control" id="no_token" placeholder="Admin Token" required />
                                     <label for="no_token">Admin Token</label>
                                 </div>
 
@@ -146,6 +146,10 @@
 
                 if (data.message === 'Admin login successful.') {
                     alert("Login berhasil!");
+
+                    localStorage.setItem('auth_token', data.token);
+                    localStorage.setItem('admin_id', data.admin.id);
+
                     window.location.href = "{{ url('/AdminPage/indexAdmin') }}";
                 }
             })

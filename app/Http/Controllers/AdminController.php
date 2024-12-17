@@ -39,13 +39,16 @@ class AdminController extends Controller
                 'message' => 'Invalid token or admin does not exist.',
             ], 401);
         }
+        // $token = $admin->createToken('admin-token')->plainTextToken;
 
         // Login berhasil
         return response()->json([
             'message' => 'Admin login successful.',
             'admin' => $admin,
+            // 'token' => $token,
             
         ], 200);
+
     }
 
     public function logout(Request $request)
@@ -58,6 +61,10 @@ class AdminController extends Controller
         ], 200);
     }
 
+    public function showLoginForm()
+    {
+        return view('AdminPage.LoginAdmin'); // Ganti dengan path view login Anda
+    }
 
 
 

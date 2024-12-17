@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Layanan;
 use App\Models\LayananExpress;
 use App\Models\LayananReguler;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class LayananController extends Controller
@@ -195,14 +196,31 @@ class LayananController extends Controller
 
     public function indexTotal()
     {
-        try {
-            // Ambil data layanan dengan status 'Lunas'
-            $layanans = Layanan::where('status', 'Lunas')->get();
+        // Ambil semua data layanan dari database
+        $layanans = Layanan::all();
 
-            // Kirim data ke view
-            return view('AdminPage.indexTotal', compact('layanans'));
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal mengambil data layanan.');
-        }
+        // Hitung total harga
+        $totalHarga = $layanans->sum('harga');
+
+        // Kirim data layanan dan total harga ke view
+        return view('AdminPage.indexTotal', compact('layanans', 'totalHarga'));
+    }
+
+    public function indexDashboard()
+    {
+        // Ambil jumlah orderan dari layanan
+        $jumlahOrderan = Layanan::count();
+
+        // Ambil jumlah karyawan dari tabel karyawan
+        $jumlahKaryawan = Karyawan::count();
+
+        // Hitung total transaksi
+        $totalTransaksi = Layanan::sum('harga');
+
+        // Ambil semua data layanan
+        $layanans = Layanan::all();
+
+        // Kirim data ke view
+        return view('AdminPage.indexAdmin', compact('jumlahOrderan', 'jumlahKaryawan', 'totalTransaksi', 'layanans'));
     }
 }

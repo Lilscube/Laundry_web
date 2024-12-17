@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KaryawanController extends Controller
 {
@@ -12,14 +13,18 @@ class KaryawanController extends Controller
      */
     public function create(Request $request)
     {
+        // Validasi input tanpa id_admin
         $validatedData = $request->validate([
-            'id_admin' => 'required|integer|exists:admins,id',
             'foto_karyawan' => 'required|string|max:255',
             'nama_karyawan' => 'required|string|max:255',
             'no_telp' => 'required|string|max:15',
             'email' => 'required|email|unique:karyawans,email',
         ]);
 
+        // Tambahkan id_admin dari Auth (admin yang sedang login)
+        // $validatedData['id_admin'] = Auth::id();
+
+        // Simpan data karyawan ke database
         $karyawan = Karyawan::create($validatedData);
 
         return response()->json([
@@ -27,6 +32,7 @@ class KaryawanController extends Controller
             'karyawan' => $karyawan,
         ], 201);
     }
+
 
     /**
      * Get all Karyawans
@@ -74,7 +80,6 @@ class KaryawanController extends Controller
         }
 
         $validatedData = $request->validate([
-            'id_admin' => 'sometimes|required|integer|exists:admins,id',
             'foto_karyawan' => 'sometimes|required|string|max:255',
             'nama_karyawan' => 'sometimes|required|string|max:255',
             'no_telp' => 'sometimes|required|string|max:15',
@@ -111,11 +116,28 @@ class KaryawanController extends Controller
 
     public function viewKaryawan()
     {
-        // Ambil semua data karyawan
         $karyawans = Karyawan::all();
-
-        // Kirim data ke view 'AdminPage.karyawan'
-        return view('AdminPage.karyawan', compact('karyawans'));
+        // dd($karyawans); // Debugging
+        return view('AdminPage.karyawan', ['karyawans' => $karyawans]);
     }
+
+    public function store(Request $request)
+    {
+        // Validasi data
+        $validatedData = $request->validate([
+            'foto_karyawan' => 'required|string|max:255',
+            'nama_karyawan' => 'required|string|max:255',
+            'no_telp' => 'required|string|max:15',
+            'email' => 'required|email|unique:karyawans,email',
+        ]);
+
+        // Simpan ke database
+        $karyawan = Karyawan::create($validatedData);
+
+        // Redirect ke halaman karyawan dengan pesan sukses
+        return redirect()->route('karyawan.view')
+                        ->with('success', 'Karyawan berhasil ditambahkan.');
+    }
+
 
 }
