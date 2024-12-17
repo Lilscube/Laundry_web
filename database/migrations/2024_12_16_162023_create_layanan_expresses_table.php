@@ -9,21 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('layanan_regulers', function (Blueprint $table) {
+        Schema::create('layanan_expresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_layanan_reguler')->constrained('layanans')->onDelete('cascade');
+            $table->foreignId('id_layanan_exspres')->constrained('layanans')->onDelete('cascade'); // Relasi ke tabel `layanans`
             $table->string('metode_pembayaran');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('layanan_regulers');
+        Schema::dropIfExists('layanan_expresses');
     }
 };

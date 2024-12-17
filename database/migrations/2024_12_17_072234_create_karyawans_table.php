@@ -13,15 +13,11 @@ return new class extends Migration
     {
         Schema::create('karyawans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_admin');
-            $table->string('foto_karyawan');
+            $table->string('foto_karyawan')->nullable();
             $table->string('nama_karyawan');
-            $table->integer('no_telp');
-            $table->string('email');
+            $table->string('no_telp', 15);
+            $table->string('email')->unique();
             $table->timestamps();
-
-            $table->foreign('id_admin')->references('id')->on('admins')->onDelete('cascade');
-
         });
     }
 

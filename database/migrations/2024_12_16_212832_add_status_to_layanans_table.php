@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('layanans', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('layanans', function (Blueprint $table) {
+            $table->string('status')->default('Belum Bayar');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('layanans');
+        Schema::table('layanans', function (Blueprint $table) {
+            $table->string('status')->default('Belum Bayar');
+        });
     }
 };

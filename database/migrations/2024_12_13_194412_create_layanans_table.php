@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('layanans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_user');
+            $table->foreignId('id_user')->constrained('users')->onDelete('cascade');
             $table->enum('detail_layanan', ['express', 'reguler']);
             $table->integer('berat');
             $table->string('durasi');

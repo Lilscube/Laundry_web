@@ -88,8 +88,8 @@
                                 </div>
 
                                 <div class="form-floating mb-2">
-                                    <input type="text" class="form-control" id="code" placeholder="Admin Code" required />
-                                    <label for="username">Admin Code</label>
+                                <input type="text" class="form-control" id="no_token" placeholder="Admin Token" required />
+                                    <label for="no_token">Admin Token</label>
                                 </div>
 
                                 <button type="submit" style="width: 100%;" class="btn btn-primary btn-block mb-2 mt-3">
@@ -102,16 +102,21 @@
             </div>
         </div>
 
+        <!-- Toast Notification -->
         <div class="toast-container">
             <div id="loginToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
                 <div class="toast-header">
-                    <strong class="me-auto">Wrong Admin Code</strong>
+                    <strong class="me-auto">Login Gagal</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Token admin salah atau tidak terdaftar.
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     
@@ -119,14 +124,40 @@
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
 
-            const code = document.getElementById('code').value;
+            const token = document.getElementById('no_token').value;
 
-            if (code === '12345') {
-                window.location.href = "{{ url('/laundry/indexAdmin') }}";
-            } else {
+            // Kirim request ke API
+            fetch('http://127.0.0.1:8000/api/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({ no_token: token }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login gagal.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+
+                if (data.message === 'Admin login successful.') {
+                    alert("Login berhasil!");
+
+                    localStorage.setItem('auth_token', data.token);
+                    localStorage.setItem('admin_id', data.admin.id);
+
+                    window.location.href = "{{ url('/AdminPage/indexAdmin') }}";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 const toast = new bootstrap.Toast(document.getElementById('loginToast'));
                 toast.show();
-            }
+            });
         });
     </script>
 </body>

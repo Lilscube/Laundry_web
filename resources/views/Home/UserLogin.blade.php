@@ -85,7 +85,7 @@
                         <div class="card-body px-4 py-5 px-md-5">
                             <form id="loginForm">
                                 <div>
-                                    <h4 class="mb-3 text-center">User Login</h4>
+                                    <h4 class="mb-3 text-center">USER LOGIN</h4>
                                 </div>
 
                                 <div class="form-floating mb-3">
@@ -122,22 +122,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault();
 
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
 
-            const userData = JSON.parse(localStorage.getItem('userData'));
+                // Kirim data ke API login
+                fetch('http://127.0.0.1:8000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('auth_token'),
+                    },
+                    body: JSON.stringify({
+                        username: username, // Ganti 'username' jika inputan username Anda adalah email
+                        password: password
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Server Response:", data);
 
-            if (userData && userData.username === username && userData.password === password) {
-                window.location.href = "{{ url('/laundry/tentangKami') }}"; 
-            } else {
-                const toast = new bootstrap.Toast(document.getElementById('loginToast'));
-                toast.show();
-            }
-        });
-    </script>
-</body>
+                    if (data.message === "Login successful.") {
+                        alert("Login berhasil!");
+
+                        // Simpan token ke localStorage
+                        localStorage.setItem('auth_token', data.token);
+
+                        // Redirect ke halaman UserPage/tentangKami
+                        window.location.href = "{{ url('/UserPage/tentangKami') }}";
+                    } else {
+                        // Tampilkan toast jika login gagal
+                        const toast = new bootstrap.Toast(document.getElementById('loginToast'));
+                        toast.show();
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    const toast = new bootstrap.Toast(document.getElementById('loginToast'));
+                    toast.show();
+                });
+            });
+         </script>
+    </body>
 </html>

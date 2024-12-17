@@ -127,8 +127,17 @@
                         },
                         body: JSON.stringify(formData),
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+
                     .then(data => {
+
+                        console.log("Server Response:", data);
+
                         if (data.message === "User registered successfully.") {
                             alert("Registrasi berhasil!");
                             window.location.href = "/UserLogin"; // Redirect ke UserLogin
@@ -138,16 +147,16 @@
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert("Terjadi kesalahan!");
+                        alert("Terjadi kesalahan jaringan atau server.");
                     });
                 });
                 </script>
 
-                @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                <!-- @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif -->
 
             </div>
         </div>
