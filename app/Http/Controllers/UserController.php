@@ -181,4 +181,17 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function indexProfileUser()
+    {
+        // $user = auth()->user();
+
+        // Pastikan user sudah login
+        // if (!$user) {
+        //     return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        // }
+
+        // Kirim data user ke view
+        return view('UserPage.indexProfileUser', compact('user'));
+    }
+
 }

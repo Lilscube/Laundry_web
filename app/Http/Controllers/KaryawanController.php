@@ -139,5 +139,23 @@ class KaryawanController extends Controller
                         ->with('success', 'Karyawan berhasil ditambahkan.');
     }
 
+    public function destroy($id)
+    {
+        // Cari data karyawan berdasarkan ID
+        $karyawan = Karyawan::find($id);
+
+        // Periksa jika data karyawan ditemukan
+        if (!$karyawan) {
+            return redirect()->back()->with('error', 'Karyawan tidak ditemukan.');
+        }
+
+        // Hapus data karyawan
+        $karyawan->delete();
+
+        // Redirect dengan pesan sukses
+        return redirect()->back()->with('success', 'Karyawan berhasil dihapus.');
+    }
+
+
 
 }

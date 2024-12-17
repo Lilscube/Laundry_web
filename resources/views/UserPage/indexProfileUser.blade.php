@@ -104,16 +104,16 @@
                 <div class="card-header"></div>
                 <img src="{{ asset('img/j2.jpg') }}" class="profile-img mx-auto d-block" alt="User Image">
                 <div class="card-body text-center">
-                    <h5 class="card-text" style="margin-top:20px; margin-bottom:20px;">
-                        <strong>{{ $user->nama }}</strong>
-                    </h5>
-                    <p class="card-text">Email: {{ $user->email }}</p>
-                    <p class="card-text">No Telp: {{ $user->no_telp }}</p>
-                    <p class="card-text">Alamat: {{ $user->alamat }}</p>
-                    <p class="card-text">Status Akun:
-                        <span class="badge-status">Aktif</span>
-                    </p>
-
+                    @if(isset($user))
+                        <h5 class="card-text" style="margin-top:20px; margin-bottom:20px;">
+                            <strong>{{ $user->nama }}</strong>
+                        </h5>
+                        <p class="card-text">Email: {{ $user->email }}</p>
+                        <p class="card-text">No Telp: {{ $user->no_telp }}</p>
+                        <p class="card-text">Alamat: {{ $user->alamat }}</p>
+                    @else
+                        <p class="text-danger">User data not available.</p>
+                    @endif
                     <div class="social-icons">
                         <a href="https://facebook.com"><i class="fab fa-facebook"></i></a>
                         <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
@@ -126,5 +126,14 @@
 </div>
 
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    @if(auth()->check())
+        <h1>Selamat datang, {{ auth()->user()->name }}!</h1>
+        <p>Ini adalah halaman profil Anda.</p>
+    @else
+        <script>
+            window.location.href = "{{ route('login') }}";
+        </script>
+    @endif
 
 @endsection

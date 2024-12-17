@@ -173,7 +173,7 @@
                     </div>
                     <div class="info text-center">
                         <a href="{{ url('UserPage/indexProfileUser') }}" class="nav-link" style="color:white">
-                            Sarah Wijayanto
+                            User
                         </a>
                     </div>
                 </div>

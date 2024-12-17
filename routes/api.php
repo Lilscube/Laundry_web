@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index'])->name('api.users.index');
     Route::get('/users/{id}', [UserController::class, 'show'])->name('api.users.show');
-     Route::get('/UserPage/indexProfileUser', [UserController::class, 'profile'])->name('user.profile');
+    // Route::get('/users/UserPage/indexProfileUser', [UserController::class, 'profile'])->name('user.profile');
 
     Route::post('/layanan/store', [LayananController::class, 'store']);
     Route::delete('/layanan/{id}', [LayananController::class, 'destroy'])->name('layanan.destroy');
@@ -39,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     
 });
+
+
 
 
 
