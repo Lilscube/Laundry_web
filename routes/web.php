@@ -50,9 +50,9 @@ Route::get('/UserPage/tentangKami', function () {
 })->name('tentangkami');
 
 // Route untuk Profil User
-Route::get('/UserPage/indexProfileUser', function () {
-    return view('UserPage.indexProfileUser');
-})->name('indexProfilUser');
+Route::get('/UserPage/ProfileUser', function () {
+    return view('UserPage.ProfileUser');
+})->name('ProfilUser');
 
 // Route untuk memilih layanan user
 Route::get('/UserPage/layanan', function () {
@@ -119,11 +119,12 @@ Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy'])->name('k
 //     Route::get('/UserPage/indexProfileUser', [UserController::class, 'indexProfileUser'])->name('profile.index');
 // }); 
 
-Route::get('/UserPage/indexProfileUser', [UserController::class, 'indexProfileUser'])->name('indexProfileUser');
+// Route::get('/UserPage/indexProfileUser', [UserController::class, 'indexProfileUser'])->name('indexProfileUser');
+Route::get('/profile', [UserController::class, 'ProfileUser'])->name('profile.user');
 
-Route::get('/UserPage/indexProfileUser', [UserController::class, 'indexProfileUser'])
-    ->name('indexProfileUser')
-    ->middleware('auth');
+// Route::get('/UserPage/indexProfileUser', [UserController::class, 'indexProfileUser'])
+//     ->name('indexProfileUser')
+//     ->middleware('auth');
 
 
 

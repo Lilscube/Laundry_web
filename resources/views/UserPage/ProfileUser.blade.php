@@ -95,6 +95,25 @@
         color: #007bff;
         transform: scale(1.1);
     }
+
+    @media (max-width: 768px) {
+        .profile-img {
+            width: 120px;
+            height: 120px;
+        }
+
+        .card-body h5 {
+            font-size: 1.6rem;
+        }
+
+        .card-body p {
+            font-size: 1rem;
+        }
+
+        .social-icons a {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 
 <div class="container-fluid">
@@ -103,37 +122,53 @@
             <div class="card text-center">
                 <div class="card-header"></div>
                 <img src="{{ asset('img/user.jpg') }}" class="profile-img mx-auto d-block" alt="User Image">
-                <div class="card-body text-center">
-                    @if(isset($user))
-                        <h5 class="card-text" style="margin-top:20px; margin-bottom:20px;">
-                            <strong>{{ $user->nama }}</strong>
-                        </h5>
-                        <p class="card-text">Email: {{ $user->email }}</p>
-                        <p class="card-text">No Telp: {{ $user->no_telp }}</p>
-                        <p class="card-text">Alamat: {{ $user->alamat }}</p>
-                    @else
-                        <p class="text-danger">User data not available.</p>
-                    @endif
-                    <div class="social-icons">
-                        <a href="https://facebook.com"><i class="fab fa-facebook"></i></a>
-                        <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
-                        <a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a>
-                    </div>
+                <div class="card-body">
+                    <h5 class="card-title" id="profile-name"></h5>
+                    <p id="profile-email"></p>
+                    <p id="profile-no-telp"></p>
+                    <p id="profile-alamat"></p>
+                    <p id="profile-message" class="text-danger"></p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
 
-    @if(auth()->check())
-        <h1>Selamat datang, {{ auth()->user()->name }}!</h1>
-        <p>Ini adalah halaman profil Anda.</p>
-    @else
-        <script>
-            window.location.href = "{{ route('login') }}";
-        </script>
-    @endif
+        const token = localStorage.getItem('token'); // Jika token disimpan di localStorage
+
+        if (!token) {
+            document.getElementById('profile-message').textContent = 'Token is missing or invalid.';
+            return;
+        }
+
+        fetch('http://127.0.0.1:8000/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Accept': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.user) {
+                // Menampilkan data pengguna ke elemen HTML
+                document.getElementById('profile-name').textContent = data.user.nama;
+                document.getElementById('profile-email').textContent = 'Email: ' + data.user.email;
+                document.getElementById('profile-no-telp').textContent = 'No Telp: ' + data.user.no_telp;
+                document.getElementById('profile-alamat').textContent = 'Alamat: ' + data.user.alamat;
+            } else {
+                // Menampilkan pesan jika data tidak ditemukan
+                document.getElementById('profile-message').textContent = 'User data not available.';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('profile-message').textContent = 'Failed to load profile data.';
+        });
+    });
+</script>
 
 @endsection
