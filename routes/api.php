@@ -21,10 +21,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/update/{id}', [UserController::class, 'update']);
     Route::delete('/user/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/users', [UserController::class, 'index'])->name('api.users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('api.users.show');
+     Route::get('/UserPage/indexProfileUser', [UserController::class, 'profile'])->name('user.profile');
+
+    Route::post('/layanan/store', [LayananController::class, 'store']);
+    Route::delete('/layanan/{id}', [LayananController::class, 'destroy'])->name('layanan.destroy');
+
     Route::post('/logout', [UserController::class, 'logout']);
 
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 });
+
+
 
 Route::post('/admin/register', [AdminController::class, 'register']);
 Route::post('/admin/login', [AdminController::class, 'login']);
@@ -42,7 +50,14 @@ Route::prefix('layanan')->group(function () {
     Route::get('/', [LayananController::class, 'index']);         // Get All Layanan
     Route::get('/{id}', [LayananController::class, 'show']);      // Get Layanan by ID
     Route::delete('/{id}', [LayananController::class, 'destroy']);
+    // Route::post('/store', [LayananController::class, 'store']);
+    Route::get('/tampilRiwayat', [LayananController::class, 'tampilRiwayat'])->name('layanan.riwayat');
+    
+
 });
+
+Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');
+Route::post('/karyawan', [KaryawanController::class, 'create'])->name('karyawan.create');
 
 
 

@@ -108,4 +108,14 @@ class KaryawanController extends Controller
             'message' => 'Karyawan deleted successfully.',
         ], 200);
     }
+
+    public function viewKaryawan()
+    {
+        // Ambil semua data karyawan
+        $karyawans = Karyawan::all();
+
+        // Kirim data ke view 'AdminPage.karyawan'
+        return view('AdminPage.karyawan', compact('karyawans'));
+    }
+
 }

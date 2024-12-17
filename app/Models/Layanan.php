@@ -18,6 +18,11 @@ class Layanan extends Model
         'metode_pembayaran',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
     public function layananExpress()
     {
         return $this->hasOne(LayananExpress::class, 'id_layanan_exspres');

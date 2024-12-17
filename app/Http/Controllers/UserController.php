@@ -33,12 +33,12 @@ class UserController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        // return response()->json([
-        //     'message' => 'User registered successfully.',
-        //     'user' => $user,
-        // ], 201);
+        return response()->json([
+            'message' => 'User registered successfully.',
+            'user' => $user,
+        ], 201);
         // return redirect()->route('login.page')->with('success', 'Registrasi berhasil! Silakan login.');
-        return redirect()->route('UserLogin')->with('success', 'Registration successful. Please login.');
+        // return redirect()->route('UserLogin')->with('success', 'Registration successful. Please login.');
     }
 
     /**
@@ -48,29 +48,25 @@ class UserController extends Controller
     {
         // Validasi input
         $validatedData = $request->validate([
-            'email' => 'required|string|email',
+            'username' => 'required|string', // Bisa diubah menjadi 'username' jika login pakai username
             'password' => 'required|string',
         ]);
 
-        // Cek kredensial
-        if (!Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        $user = User::where('username', $validatedData['username'])->first();
+    
+        // Cek kredensial menggunakan username
+        if (!Auth::attempt(['username' => $validatedData['username'], 'password' => $validatedData['password']])) {
+            return response()->json([
+                'message' => 'Username atau password salah.',
+            ], 401);
         }
-
+    
         // Ambil data user yang sedang login
         $user = Auth::user();
-
+    
         // Buat token autentikasi menggunakan Laravel Sanctum
         $token = $user->createToken('auth_token')->plainTextToken;
-
-        // Jika token gagal dibuat, kembalikan error
-        if (!$token) {
-            return response()->json(['error' => 'Failed to create token.'], 500);
-        }
-
-        // Respons JSON
+    
         return response()->json([
             'message' => 'Login successful.',
             'user' => $user,
@@ -145,4 +141,44 @@ class UserController extends Controller
         // Jika menggunakan blade, tampilkan ke view
         // return view('Home.UserList', ['users' => $users]);
     }
+
+
+    public function show($id)
+    {
+        // Cari user berdasarkan ID
+        $user = User::find($id);
+
+        // Jika user tidak ditemukan
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found.'
+            ], 404);
+        }
+
+        // Jika user ditemukan, kembalikan data user
+        return response()->json([
+            'message' => 'User data retrieved successfully.',
+            'user' => $user
+        ], 200);
+    }
+
+    public function profile()
+    {
+        // Ambil data user yang sedang login
+        $user = Auth::user();
+    
+        // Jika user tidak login
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthorized. Please login first.',
+            ], 401);
+        }
+    
+        // Kirim data user
+        return response()->json([
+            'message' => 'User profile retrieved successfully.',
+            'user' => $user,
+        ], 200);
+    }
+
 }
